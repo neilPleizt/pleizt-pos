@@ -1,0 +1,11 @@
+suite_namespace: api\tests\api
+actor: ApiTester
+modules:
+    enabled:
+        - REST:
+            url: http://localhost:22080
+            depends: Yii2
+            part: JSON
+
+    config:
+        - Yii2
