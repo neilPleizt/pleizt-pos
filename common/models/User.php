@@ -1,18 +1,12 @@
 <?php
 
-namespace api\models;
+namespace common\models;
 
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
-use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
-use yii\web\UnauthorizedHttpException;
 
 /**
  * User model
@@ -49,13 +43,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-
-        $behaviors['authenticator'] = [
-            'class' => HttpBasicAuth::class
+        return [
+            TimestampBehavior::class,
         ];
-
-        return $behaviors;
     }
 
     /**
@@ -82,15 +72,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $user = static::find()->where(['access_token' => $token, 'status' => self::STATUS_ACTIVE])->one();
-        if (!$user) {
-            return false;
-        }
-        if ($user->expire_at < time()) {
-            throw new UnauthorizedHttpException('the access - token expired ', -1);
-        } else {
-            return $user;
-        }
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     /**
@@ -228,14 +210,5 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
-    }
-
-    /**
-     * Generate access token
-     */
-    public function generateAccessToken()
-    {
-        $this->access_token = Yii::$app->security->generateRandomString();
-        return $this->access_token;
     }
 }

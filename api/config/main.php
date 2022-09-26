@@ -24,9 +24,14 @@ return [
             ],
             'csrfParam' => '_csrf-api',
         ],
+        'response' => [
+            'format' => \yii\web\Response::FORMAT_JSON
+        ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'api\models\User',
             'enableAutoLogin' => true,
+            'enableSession' => false,
+            'loginUrl' => true,
             'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],
         'session' => [
@@ -49,7 +54,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                // ['class' => 'yii\rest\UrlRule', 'controller' => 'user']
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'user', 'extraPatterns' => ['POST login' => 'login', 'GET test' => 'test']]
             ],
         ],
     ],
