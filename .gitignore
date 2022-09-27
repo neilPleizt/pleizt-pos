@@ -38,6 +38,8 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
+/node_modules
+/dist
 /frontend/web/index.php
 /frontend/web/index-test.php
 /frontend/web/robots.txt
